@@ -1,8 +1,7 @@
 pipeline {
-    agent any  // Use any available agent
-
+    agent any
     tools {
-        maven 'Maven'  // Ensure this matches the name configured in Jenkins
+        maven 'Maven'
     }
     stages {
         stage('Checkout') {
@@ -10,32 +9,23 @@ pipeline {
                 git branch: 'master', url: 'https://github.com/likithg02/MymavenWebApp.git'
             }
         }
-
         stage('Build') {
             steps {
-                sh 'mvn clean package'  // Run Maven build
+                sh 'mvn clean package'  // Packages into WAR → target/MyMavenWebApp.war
             }
         }
-
         stage('Test') {
             steps {
                 sh 'mvn test'  // Run unit tests
             }
         }
-
-        
-        
-       
-        stage('Run Application') {
+        stage('Deploy') {
             steps {
-                // Start the JAR application
-                sh 'mvn exec:java -Dexec.mainClass="com.example.App"'
+                // Deploy WAR to Tomcat webapps directory
+                sh 'cp target/MyMavenWebApp.war /var/lib/tomcat9/webapps/'
             }
         }
-
-        
     }
-
     post {
         success {
             echo 'Build and deployment successful!'
