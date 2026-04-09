@@ -22,7 +22,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 // Deploy WAR to Tomcat webapps directory
-                sh 'cp target/MyMavenWebApp.war /var/lib/tomcat9/webapps/'
+                 sh 'ls -l target/*.war'  // Verify WAR file is packaged
             }
         }
     }
